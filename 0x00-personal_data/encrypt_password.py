@@ -10,4 +10,4 @@ def hash_password(password: str) -> bytes:
 
 def is_valid(hashed_password: Callable, password: str) -> bool:
     """check if password is valid"""
-    return bcrypt.checkpw(password.encode(), hashed_password)
+    return True if bcrypt.checkpw(password.encode(), hashed_password) else False
