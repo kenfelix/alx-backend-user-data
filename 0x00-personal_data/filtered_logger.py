@@ -1,14 +1,21 @@
 #!/usr/bin/env python3
-"""
-Main file
-"""
+""" Handling personal data"""
+
+from typing import List
 import re
 import logging
-from typing import List
+import mysql.connector
+from os import getenv
 
 
-def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str:
-     """returns the log message obfuscated"""
+PII_FIELDS = ('name', 'password', 'phone', 'ssn', 'email')
+
+
+def filter_datum(
+        fields: List[str],
+        redaction: str, message: str, separator: str
+        ) -> str:
+    """returns the log message obfuscated"""
 
     for i in fields:
         message = re.sub(i + "=.*?" + separator,
