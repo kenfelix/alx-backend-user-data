@@ -11,7 +11,11 @@ class Auth:
     
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """retuens false"""
-        return False
+        if path in excluded_paths:
+            return False
+        if not path or not excluded_paths:
+            return True
+        
     
     def authorization_header(self, request=None) -> str:
         """returns None"""
