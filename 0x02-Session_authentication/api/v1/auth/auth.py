@@ -52,3 +52,4 @@ class Auth:
 
         getenv.set('SESSION_NAME') = _my_session_id
         cookie = request.cookies.get(getenv('SESSION_NAME'))
+        return cookie
