@@ -35,3 +35,22 @@ class DB:
         self.__session.add(new_user)
         self.__session.commit(new_user)
         return new_user
+    
+    def find_user_by(self, **kwargs) -> User:
+        """
+        find_user_by - a method to find a user
+        Arguments:
+            kwargs: key word based argument
+        Return:
+            the first row found in the users
+        """
+        if kwargs is None:
+            raise InvalidRequestError
+        key_cols = User.__table__.columns.keys()
+        for k in kwargs.keys():
+            if k not in key_cols:
+                raise InvalidRequestError
+        rqrd_usr = self._session.query(User).filter_by(**kwargs).first()
+        if rqrd_usr is None:
+            raise NoResultFound
+        return rqrd_usr
