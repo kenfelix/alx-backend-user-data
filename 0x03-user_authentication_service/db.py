@@ -29,15 +29,15 @@ class DB:
         if self.__session is None:
             DBSession = sessionmaker(bind=self._engine)
             self.__session = DBSession()
-        return self.__session
-    
+        return self.__sessio
+
     def add_user(self, email: str, hashed_password: str) -> User:
         """saves the user to the database and return a user obj"""
         new_user = User(email=email, hashed_password=hashed_password)
         self._session.add(new_user)
         self._session.commit()
-        return new_user
-    
+        return new_use
+
     def find_user_by(self, **kwargs) -> User:
         """
         find_user_by - a method to find a user
