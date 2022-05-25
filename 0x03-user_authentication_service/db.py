@@ -58,8 +58,8 @@ class DB:
         return rqrd_usr
 
     def update_user(self, user_id: int, **kwargs) -> None:
-        """Locate and updates user’s attributes as passed in the method’s arguments"""
-        user = self.find_user_by(user_id)
+        """Updates a user"""
+        user = self.find_user_by(id=user_id)
 
         for key, value in kwargs.items():
             if hasattr(user, key):
