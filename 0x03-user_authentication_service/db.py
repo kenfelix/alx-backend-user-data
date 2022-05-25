@@ -56,3 +56,15 @@ class DB:
         if rqrd_usr is None:
             raise NoResultFound
         return rqrd_usr
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """Locate and updates user’s attributes as passed in the method’s arguments"""
+        user = self.find_user_by(user_id)
+
+        for key, value in kwargs.items():
+            if hasattr(user, key):
+                setattr(user, key, value)
+            else:
+                raise ValueError
+
+        self._session.commit()
