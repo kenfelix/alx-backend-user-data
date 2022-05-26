@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """Auth Module"""
+from db import DB
+from user import User
 from bcrypt import hashpw, gensalt, checkpw
 
 
@@ -9,3 +11,22 @@ def _hash_password(password: str) -> bytes:
     hashed_password = hashpw(password.encode('utf-8'), gensalt())
 
     return hashed_password
+
+
+class Auth:
+    """Auth class to interact with the authentication database.
+    """
+
+    def __init__(self):
+        self._db = DB()
+
+    def register_user(email: str, password: str) -> User:
+        """creates a new user"""
+        try:
+            user = self._db.find_user_by(email=email)
+            if user:
+                raise ValueError("User {} already exists".format(email))
+        except NoResultFound:
+            hashed_password = _hash_password(password)
+            new_user = self._db.add_user(email, hashed_password)
+            return new_user
