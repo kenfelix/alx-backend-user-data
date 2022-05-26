@@ -19,7 +19,7 @@ def basic() -> str:
 
 
 @app.route('/users', methods=['POST'], strict_slashes=False)
-def register() -> str:
+def users() -> str:
     """register a new user"""
     email = request.form.get("email")
     password = request.form.get("password")
