@@ -50,3 +50,14 @@ class Auth:
         self._db.update_user(user.id, session_id=session_id)
 
         return session_id
+
+    def valid_login(self, email: str, password: str) -> bool:
+        """returns true if user is valid"""
+        try:
+            user= self._db.find_user_by(email=email)
+            return checkpw(
+                    password.encode('utf-8'),
+                    user.hashed_password
+                    )
+        except NoResultFound:
+            return False
