@@ -2,6 +2,7 @@
 """Auth Module"""
 from db import DB
 from user import User
+from typing import Union
 from bcrypt import hashpw, gensalt, checkpw
 from sqlalchemy.orm.exc import NoResultFound
 from uuid import uuid4
@@ -61,3 +62,16 @@ class Auth:
                     )
         except NoResultFound:
             return False
+
+    def get_user_from_session_id(self, session_id: str) -> Union[User, None]:
+        """
+        finds a user using the session id
+        """
+        if session_id is None:
+            return None
+        
+        try:
+            user = self._db.find_user_by(session_id=session_id)
+            return user
+        except NoResultFound:
+            return None
