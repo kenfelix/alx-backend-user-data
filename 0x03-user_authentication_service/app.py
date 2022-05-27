@@ -2,7 +2,7 @@
 """
 Flask app Module
 """
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, redirect
 from auth import Auth
 
 
@@ -37,7 +37,7 @@ def users() -> str:
             }), 400
 
 
-@app.route('', methods=['POST'], strict_slashes=False)
+@app.route('/sessions', methods=['POST'], strict_slashes=False)
 def login() -> str:
     """create a new session for the user, 
     store it the session ID as a cookie with key 
@@ -55,6 +55,20 @@ def login() -> str:
     response = jsonify({"email": email, "message": "logged in"})
     response.set_cookie("session_id", session_id)
     return response
+
+
+@app.route('/sessions', methods=['POST'], strict_slashes=False)
+def login():
+    """destroys session and logs user out"""
+    session_id = request.cookies.get("session_id", None)
+    user = AUTH.get_user_from_session_id(session_id)
+    
+    if session_id is None or user is None:
+        abort(403)
+
+    AUTH.destroy_session(user.id)
+
+    return redirect('/')
 
 
 if __name__ == "__main__":
